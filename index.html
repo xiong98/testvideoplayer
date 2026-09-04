@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ArtPlayer 流媒体播放器</title>
+
+    <!-- ============================================================
+    ★★★ 在这里修改视频地址 ★★★
+    支持 MP4、HLS (m3u8)、FLV 等格式
+    ============================================================ -->
+    <script>
+        // 修改这个变量的值即可更换视频
+        var videoUrl = 'https://cdn.yzzy30-play.com/20260831/58625_0b9c537d/3000k/hls/mixed.m3u8';
+        //var videoUrl = 'https://cdn.yzzy30-play.com/20260831/58625_0b9c537d/index.m3u8';
+	//媒体流来源参考：https://www.movieffm.net/movies/dear-you/
+	// 如果是 HLS 流，可以使用：'https://example.com/stream.m3u8'
+        // 如果是 FLV 流，可以使用：'https://example.com/stream.flv'
+    </script>
+
+    <style>
+        /* 页面基础样式 - 让播放器居中显示 */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: #0a0a0a;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        }
+
+        .player-wrapper {
+            width: 90%;
+            max-width: 1000px;
+            background: #1a1a1a;
+            border-radius: 16px;
+            padding: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.8);
+        }
+
+        /* 播放器容器 - 宽高比 16:9 */
+        .artplayer-app {
+            width: 100%;
+            aspect-ratio: 16 / 9;
+            background: #000;
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        /* 提示文字 */
+        .info {
+            color: #888;
+            text-align: center;
+            margin-top: 16px;
+            font-size: 14px;
+            letter-spacing: 0.3px;
+        }
+
+        .info code {
+            background: #2a2a2a;
+            padding: 2px 10px;
+            border-radius: 4px;
+            color: #4fc3f7;
+            font-size: 13px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="player-wrapper">
+        <!-- ArtPlayer 挂载容器 -->
+        <div class="artplayer-app" id="player"></div>
+        <!-- <div class="info">
+            💡 当前视频地址：<code id="urlDisplay"></code>
+        </div> -->
+    </div>
+
+    <!-- 1. 引入 ArtPlayer.js 核心库 -->
+    <script src="https://cdn.jsdelivr.net/npm/artplayer/dist/artplayer.js">
+    </script>
+
+    <!-- 2. 初始化播放器 -->
+    <script>
+        // 在页面上显示当前视频地址
+        // document.getElementById('urlDisplay').textContent = videoUrl;
+
+        // 创建播放器实例
+        var art = new Artplayer({
+            container: '#player', // 容器选择器
+            url: videoUrl, // 视频地址（来自顶部变量）
+            poster: '', // 封面图（可选）
+            autoplay: false, // 是否自动播放
+            volume: 0.8, // 默认音量 80%
+            muted: false, // 是否静音
+            loop: false, // 是否循环播放
+            flip: true, // 启用画面翻转
+            playbackRate: true, // 启用播放速度调节
+            aspectRatio: true, // 启用宽高比调节
+            setting: true, // 显示设置面板
+            hotkey: true, // 启用键盘快捷键
+            pip: true, // 画中画模式
+            autoSize: true, // 自适应大小
+            fullscreen: true, // 全屏按钮
+            // 自定义控制栏（可选，不配置则使用默认）
+            // controls: ['play', 'progress', 'volume', 'setting', 'pip', 'fullscreen'],
+        });
+
+        // 监听播放器就绪事件
+        art.on('ready', function() {
+            console.log('✅ 播放器已就绪，当前视频：', videoUrl);
+        });
+
+        // 监听错误事件
+        art.on('error', function(error) {
+            console.error('❌ 播放器错误：', error);
+            // 如果视频加载失败，在控制台给出提示
+            if (error && error.type === 'videoError') {
+                console.warn('💡 请检查视频地址是否正确，或是否支持该格式');
+            }
+        });
+
+        // 暴露 art 实例到全局，方便在浏览器控制台调试
+        window.art = art;
+    </script>
+</body>
+</html>
