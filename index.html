@@ -76,9 +76,9 @@
     <div class="player-wrapper">
         <!-- ArtPlayer 挂载容器 -->
         <div class="artplayer-app" id="player"></div>
-        <!-- <div class="info">
-            💡 当前视频地址：<code id="urlDisplay"></code>
-        </div> -->
+        <div class="info">
+            💡 当前视频：<code id="urlDisplay"></code>
+        </div>
     </div>
 
     <!-- 1. 引入 ArtPlayer.js 核心库 -->
@@ -88,7 +88,7 @@
     <!-- 2. 初始化播放器 -->
     <script>
         // 在页面上显示当前视频地址
-        // document.getElementById('urlDisplay').textContent = videoUrl;
+        document.getElementById('urlDisplay').textContent = '给阿嬷的情书';
 
         // 创建播放器实例
         var art = new Artplayer({
